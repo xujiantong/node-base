@@ -1,9 +1,10 @@
-import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
 import '@/assets/styles/global.css';
+import { RouterProvider } from 'react-router';
+import router from '@/router';
+import { Suspense } from 'react';
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+  <Suspense>
+    <RouterProvider router={router} />
+  </Suspense>
 );
