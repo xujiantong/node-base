@@ -2,7 +2,9 @@
   "name": "node-base",
   "version": "1.0.0",
   "description": "node-base",
-  "scripts": {},
+  "scripts": {
+    "dev:web": "pnpm --filter ./apps/frontend dev"
+  },
   "keywords": ["Nodejs","React","Monorepo"],
   "author": "<sddzxjt1688@gmail.com>",
   "license": "ISC",
