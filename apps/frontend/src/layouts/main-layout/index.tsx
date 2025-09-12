@@ -1,13 +1,34 @@
-import { Outlet } from 'react-router/internal/react-server-client';
+import { Outlet, useNavigate } from 'react-router';
 import './index.less';
 import Brand from '@/assets/imgs/brand/brand.svg';
-export default function index() {
+import { Menu } from 'antd';
+import { useState } from 'react';
+import { menuItems } from '@/router/menus.tsx';
+
+export default function Page() {
+  const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <section className="app-container">
       <aside className="app-sidebar">
-        <div className="brand h-[var(--header-h)] bg-black flex justify-center items-center">
-          <img src={Brand} alt="Brand" width={120} />
+        <div
+          className="brand h-[var(--header-h)] bg-black flex justify-center items-center cursor-pointer"
+          onClick={() => setCollapsed(!collapsed)}
+        >
+          <img src={Brand} alt="Brand" width={98} />
         </div>
+        <Menu
+          defaultSelectedKeys={['1']}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+          theme="dark"
+          inlineCollapsed={collapsed}
+          items={menuItems}
+          onClick={({ key }) => {
+            navigate(key);
+          }}
+        />
       </aside>
       <section className="app-main">
         <header className="app-header">
