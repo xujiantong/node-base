@@ -1,7 +1,7 @@
 function App() {
   return (
     <>
-      <header></header>
+      <header className={'text-[#F69]'}>React</header>
     </>
   );
 }
