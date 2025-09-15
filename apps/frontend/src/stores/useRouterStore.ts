@@ -90,7 +90,7 @@ const useRouterStore = create<StoreConfig>((set) => ({
     {
       id: 1,
       key: '/',
-      label: 'home'
+      label: 'Home'
     }
   ],
   updateMenus: (newMenus: any) => set({ menus: newMenus }),
