@@ -5,7 +5,7 @@ import Logo from '@/assets/imgs/brand/logo.svg';
 import { Menu } from 'antd';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import McHeaderTabs from '@/components/tabs/McHeaderTabs.tsx';
+import McHeaderTabs from '@/components/mc-header-tabs/McHeaderTabs.tsx';
 import useRouterStore from '@/stores/useRouterStore.ts';
 import { buildFlatMap } from '@/utils/router.util.ts';
 
