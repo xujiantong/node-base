@@ -22,7 +22,12 @@ export function setupSwagger(app) {
   SwaggerModule.setup('api', app, documentFactory, {
     swaggerOptions: {
       // 添加持久化的token，防止刷新token失效
-      persistAuthorization: true
+      persistAuthorization: true,
+      tryItOutEnabled: true,
+      requestSnippetsEnabled: false,
+      syntaxHighlight: {
+        activated: false // 禁用自带高亮和格式化
+      }
     }
   });
 }

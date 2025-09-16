@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app/app.module';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { fastifyApp } from '@/adaptors/fastify.adapter';
-import { isDev } from '@/utils/env';
-import { setupSwagger } from '@/swagger/swagger.setup';
+import { setupSwagger } from '@/shared/swagger/swagger.setup';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,7 +14,6 @@ async function bootstrap() {
       snapshot: true // 快照模式
     }
   );
-
   app.enableCors({
     origin: '*',
     credentials: true,
@@ -22,6 +21,8 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'] // 按需配置允许的请求头
   });
   setupSwagger(app);
+  // 全局注册日志拦截器
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   await app.listen(process.env.PORT ?? 3700);
   const url = await app.getUrl();
