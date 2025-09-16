@@ -6,6 +6,9 @@ import useRouterStore from '@/stores/useRouterStore.ts';
 
 export default function McHeaderTabs() {
   const [activeKey, setActiveKey] = useState();
+  const { menusFlatMap, updateTabArr, tabArr } = useRouterStore(
+    (state) => state
+  );
   const onEdit = (
     targetKey: React.MouseEvent | React.KeyboardEvent | string,
     action: 'add' | 'remove'
@@ -28,9 +31,6 @@ export default function McHeaderTabs() {
     }
   ]);
   const location = useLocation();
-  const { menusFlatMap, updateTabArr, tabArr } = useRouterStore(
-    (state) => state
-  );
   const navigate = useNavigate();
 
   const onChange = (v: string) => {
