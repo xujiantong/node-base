@@ -4,6 +4,7 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { fastifyApp } from '@/adaptors/fastify.adapter';
 import { setupSwagger } from '@/shared/swagger/swagger.setup';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
+import { ResponseInterceptor } from '@/interceptors/response.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -23,6 +24,8 @@ async function bootstrap() {
   setupSwagger(app);
   // 全局注册日志拦截器
   app.useGlobalInterceptors(new LoggingInterceptor());
+  // 全局注册响应拦截器
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   await app.listen(process.env.PORT ?? 3700);
   const url = await app.getUrl();

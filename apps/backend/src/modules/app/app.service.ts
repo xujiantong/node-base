@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRedis } from '@/decorators/inject-redis.decorator';
 import { Redis } from 'ioredis';
-import { RedisKeys } from '@/types/cache';
+import { LoggerService } from '@/shared/logger/logger.service';
 
 @Injectable()
 export class AppService {
-  constructor(@InjectRedis() private readonly redis: Redis) {}
+  constructor(
+    @InjectRedis() private readonly redis: Redis,
+    private logger: LoggerService
+  ) {}
   async getHello() {
-    this.redis.set(`${RedisKeys.TEST_PREFIX}ping`, 'pong');
-    return 200;
+    this.logger.error('error');
+    return 'metrics';
   }
 }

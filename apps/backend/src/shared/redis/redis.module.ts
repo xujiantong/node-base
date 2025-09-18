@@ -1,4 +1,4 @@
-import { Module, Provider } from '@nestjs/common';
+import { Global, Module, Provider } from '@nestjs/common';
 import {
   RedisModule as NestRedisModule,
   RedisService
@@ -34,6 +34,7 @@ const providers: Provider[] = [
     inject: [RedisService] // 注入 RedisService
   }
 ];
+@Global()
 @Module({
   imports: [
     // cache

@@ -28,6 +28,7 @@ export function setupSwagger(app) {
       syntaxHighlight: {
         activated: false // 禁用自带高亮和格式化
       }
-    }
+    },
+    raw: ['json']
   });
 }

@@ -3,7 +3,7 @@ import type { Logger as WinstonLogger } from 'winston';
 import {
   ConsoleLogger,
   ConsoleLoggerOptions,
-  Injectable,
+  Injectable
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -12,13 +12,14 @@ import { config, createLogger, format, transports } from 'winston';
 import { ConfigKeyPaths } from '@/config';
 
 import 'winston-daily-rotate-file';
+import { isDev } from '@/utils/env';
 
 export enum LogLevel {
   ERROR = 'error',
   WARN = 'warn',
   INFO = 'info',
   DEBUG = 'debug',
-  VERBOSE = 'verbose',
+  VERBOSE = 'verbose'
 }
 
 @Injectable()
@@ -28,7 +29,7 @@ export class LoggerService extends ConsoleLogger {
   constructor(
     context: string,
     options: ConsoleLoggerOptions,
-    private configService: ConfigService<ConfigKeyPaths>,
+    private configService: ConfigService<ConfigKeyPaths>
   ) {
     super(context, options);
     this.initWinston();
@@ -36,7 +37,7 @@ export class LoggerService extends ConsoleLogger {
 
   protected get level(): LogLevel {
     return this.configService.get('app.logger.level', {
-      infer: true,
+      infer: true
     });
   }
 
@@ -50,7 +51,7 @@ export class LoggerService extends ConsoleLogger {
       format: format.combine(
         format.errors({ stack: true }),
         format.timestamp(),
-        format.json(),
+        format.json()
       ),
       transports: [
         new transports.DailyRotateFile({
@@ -59,7 +60,7 @@ export class LoggerService extends ConsoleLogger {
           datePattern: 'YYYY-MM-DD',
           maxFiles: this.maxFiles,
           format: format.combine(format.timestamp(), format.json()),
-          auditFile: 'logs/.audit/app.json',
+          auditFile: 'logs/.audit/app.json'
         }),
         new transports.DailyRotateFile({
           level: LogLevel.ERROR,
@@ -67,22 +68,22 @@ export class LoggerService extends ConsoleLogger {
           datePattern: 'YYYY-MM-DD',
           maxFiles: this.maxFiles,
           format: format.combine(format.timestamp(), format.json()),
-          auditFile: 'logs/.audit/app-error.json',
-        }),
-      ],
+          auditFile: 'logs/.audit/app-error.json'
+        })
+      ]
     });
 
-    // if (isDev) {
-    //   this.winstonLogger.add(
-    //     new transports.Console({
-    //       level: this.level,
-    //       format: format.combine(
-    //         format.simple(),
-    //         format.colorize({ all: true }),
-    //       ),
-    //     }),
-    //   );
-    // }
+    if (isDev) {
+      this.winstonLogger.add(
+        new transports.Console({
+          level: this.level,
+          format: format.combine(
+            format.simple(),
+            format.colorize({ all: true })
+          )
+        })
+      );
+    }
   }
 
   verbose(message: any, context?: string): void {
@@ -114,7 +115,7 @@ export class LoggerService extends ConsoleLogger {
     const hasStack = !!context;
     this.winstonLogger.log(LogLevel.ERROR, {
       context: hasStack ? context : stack,
-      message: hasStack ? new Error(message) : (message as string),
+      message: hasStack ? new Error(message) : (message as string)
     });
   }
 }

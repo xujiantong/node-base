@@ -12,6 +12,8 @@ import { MenuModule } from '@/modules/system/menu/menu.module';
 import { LogModule } from '@/modules/system/log/log.module';
 import { DeptModule } from '@/modules/system/dept/dept.module';
 import { LoggerModule } from '@/shared/logger/logger.module';
+import { ExceptionModule } from '@/shared/exception';
+import { AuthModule } from '@/modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { LoggerModule } from '@/shared/logger/logger.module';
       load: [...Object.values(config)]
     }),
     LoggerModule.forRoot(),
+    ExceptionModule.forRoot(),
+    AuthModule,
     RedisModule,
     PrismaModule,
     UserModule,

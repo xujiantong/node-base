@@ -25,7 +25,6 @@ app.getInstance().addHook('onRequest', (request, reply, done) => {
   // 处理请求头中的 origin，如果未定义，则用 host 替代，防止后续跨域处理异常
   const { origin, authorization } = request.headers;
   if (!origin) request.headers.origin = request.headers.host;
-  console.log('onRequest', request.url, request.method);
 
   // 拒绝访问以 .php 结尾的请求路径，返回 418 状态码和自定义提示信息
   // 表示该服务器不支持 PHP 文件
