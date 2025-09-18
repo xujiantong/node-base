@@ -5,7 +5,11 @@
   "scripts": {
     "dev:web": "pnpm --filter ./apps/frontend dev"
   },
-  "keywords": ["Nodejs","React","Monorepo"],
+  "keywords": [
+    "Nodejs",
+    "React",
+    "Monorepo"
+  ],
   "author": "<sddzxjt1688@gmail.com>",
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
@@ -17,7 +21,10 @@
     "pnpm": ">=10"
   },
   "dependencies": {
-    "dotenv": "^17.2.2"
+    "@types/lodash": "^4.17.20",
+    "dayjs": "^1.11.18",
+    "dotenv": "^17.2.2",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "commitizen": "^4.3.1",

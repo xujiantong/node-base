@@ -36,7 +36,8 @@ export const Errors = {
   },
   USER_EXIST: { code: 30004, message: 'User already exists' },
   EMAIL_EXIST: { code: 30005, message: 'Email already exists' },
-  MOBILE_EXIST: { code: 30005, message: 'Mobile already exists' },
+  MOBILE_EXIST: { code: 30006, message: 'Mobile already exists' },
+  USER_PWD_INCORRECT: { code: 30007, message: 'Account or password incorrect' },
 
   // 数据相关
   DATA_NOT_FOUND: { code: 40001, message: 'Data not found' },

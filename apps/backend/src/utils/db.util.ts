@@ -19,7 +19,7 @@ export const genCreateAudit = function (this: any): CreateAudit {
 };
 export const genUpdateAudit = function (this: any): UpdateAudit {
   const now = new Date();
-  const { id } = this.request.user;
+  const { id } = this?.request.user || {};
   return {
     updated_by: id || null,
     updated_at: now,

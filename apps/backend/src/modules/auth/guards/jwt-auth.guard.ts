@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { FastifyRequest } from 'fastify';
+import { FastifyReply, FastifyRequest } from 'fastify';
 import Redis from 'ioredis';
 import { isEmpty, isNil } from 'lodash';
 import { ExtractJwt } from 'passport-jwt';
@@ -16,7 +16,7 @@ import { InjectRedis } from '@/decorators/inject-redis.decorator';
 
 import { LoggerService } from '@/shared/logger/logger.service';
 import { AuthService } from '@/modules/auth/auth.service';
-import { genTokenBlacklistKey } from '@/utils/redis.util';
+import { genAuthTokenKey, genTokenBlacklistKey } from '@/utils/redis.util';
 import { BizException } from '@/shared/exception';
 import { Errors } from '@/shared/exception/exception.const';
 import { IAuthUser } from '@/modules/auth/dto/auth.dto';
@@ -55,6 +55,7 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
     const request = context
       .switchToHttp()
       .getRequest<FastifyRequest<RequestType> & { user?: IAuthUser }>();
+    const response: FastifyReply = context.switchToHttp().getResponse();
 
     if (RouterWhiteList.includes(request.routeOptions.url)) return true;
 
@@ -76,9 +77,10 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
 
     let result: boolean = false;
     try {
-      // 解析 token
+      // 解析 token 并挂载
       request.user = await this.authService.verifyAccessToken(token);
       result = (await super.canActivate(context)) as boolean;
+      // this.logger.debug(request.user);
     } catch (err) {
       this.logger.error(err);
       if (isPublic) return true;
@@ -87,10 +89,34 @@ export class JwtAuthGuard extends AuthGuard(AuthStrategy.JWT) {
         throw new BizException(Errors.INVALID_LOGIN);
       }
     }
+    // 判断 Token 是否有效
+    const redisToken = await this.redis.get(genAuthTokenKey(request.user.id));
+    if (!redisToken) {
+      throw new BizException(Errors.INVALID_TOKEN);
+    }
+
+    //是否可以异地登录
+    // if (token !== redisToken) {
+    //   throw new BizException(Errors.INVALID_TOKEN);
+    // }
+
     // 判断 token 是否过期
-    const now = dayjs();
-    if (now.isAfter(request.user.exp)) {
-      // TODO:  wait toke & refresh token
+    const now = dayjs().unix();
+    if (now > request.user.exp) {
+      const refreshTokenRaw = await this.authService.getRefreshToken(token);
+      const refreshToken = await this.authService.verifyRefreshToken(
+        refreshTokenRaw.value
+      );
+      if (now > refreshToken.exp) {
+        throw new BizException(Errors.TOKEN_EXPIRED);
+      } else {
+        const { token } = await this.authService.resetToken(
+          request.user.id,
+          request.user.ip
+        );
+        // 前端响应拦截存在 X-Access-Token 替换
+        response.header('X-Access-Token', token);
+      }
     }
 
     // 密码版本判断: 登录期间更改过密码

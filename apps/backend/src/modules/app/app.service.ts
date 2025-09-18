@@ -10,7 +10,7 @@ export class AppService {
     private logger: LoggerService
   ) {}
   async getHello() {
-    this.logger.error('error');
+    // this.logger.error('error');
     return 'metrics';
   }
 }

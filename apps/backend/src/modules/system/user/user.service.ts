@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/shared/prisma/prisma.service';
 import { BizException } from '@/shared/exception';
 import { Errors } from '@/shared/exception/exception.const';
-import { UserDto } from '@/modules/system/user/dto/user.dto';
+import { UserDto, UserStatus } from '@/modules/system/user/dto/user.dto';
 import { CryptoUtil } from '@/utils/crypto.util';
-import { genCreateAudit } from '@/utils/db.util';
+import { genCreateAudit, genUpdateAudit } from '@/utils/db.util';
+import { sys_user } from 'generated/prisma';
+import { isEmpty } from 'lodash';
 
 @Injectable()
 export class UserService {
@@ -49,8 +51,21 @@ export class UserService {
     });
   }
 
-  update(id: number, updateUserDto: any) {
-    return '';
+  async update(id: number, updateUserDto: any) {
+    const user = await this.findOne(id);
+    if (isEmpty(user)) {
+      throw new BizException(Errors.USER_NOT_FOUND);
+    }
+    const patchUser = {
+      ...updateUserDto,
+      ...genUpdateAudit()
+    };
+    return this.prisma.sys_user.update({
+      where: {
+        id
+      },
+      data: patchUser
+    });
   }
 
   remove(id: number) {
@@ -88,6 +103,17 @@ export class UserService {
       },
       select: {
         id: true
+      }
+    });
+  }
+
+  async findUserByAccount(account: string) {
+    return this.prisma.sys_user.findFirst({
+      where: {
+        AND: {
+          status: UserStatus.ENABLED
+        },
+        OR: [{ username: account }, { email: account }, { mobile: account }]
       }
     });
   }

@@ -8,6 +8,10 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+export enum UserStatus {
+  ENABLED = 0,
+  DISABLED = 1
+}
 
 export class UserDto {
   @ApiHideProperty()
@@ -45,7 +49,7 @@ export class UserDto {
 
   @ApiProperty({ description: '状态', default: 0 })
   @IsInt()
-  status: number;
+  status: UserStatus;
 
   @ApiProperty({ description: '昵称', required: false })
   @IsOptional()

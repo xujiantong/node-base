@@ -18,7 +18,6 @@ export class AppController {
   ) {}
   @Get()
   getHello() {
-    throw new BizException(Errors.UNKNOWN_ERROR);
     return this.appService.getHello();
   }
 
