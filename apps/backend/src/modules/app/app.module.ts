@@ -15,6 +15,7 @@ import { ExceptionModule } from '@/shared/exception';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { SystemModule } from '@/modules/system/system.module';
 import { SharedModule } from '@/shared/shared.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SharedModule } from '@/shared/shared.module';
       // 加载自定义配置文件
       load: [...Object.values(config)]
     }),
+    ScheduleModule.forRoot(),
     SharedModule,
     AuthModule,
     SystemModule

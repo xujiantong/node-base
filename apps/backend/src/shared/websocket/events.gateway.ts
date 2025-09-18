@@ -5,7 +5,6 @@ import {
   WebSocketServer,
   ConnectedSocket
 } from '@nestjs/websockets';
-import { log } from 'console';
 import { Socket, Server } from 'socket.io';
 import { LoggerService } from '@/shared/logger/logger.service';
 
@@ -32,7 +31,7 @@ export class EventsGateway {
     client.emit('events', { data: 1, message: 'Servier return you ' });
   }
 
-  // 以下是三个 WebSocketGateway生命周期hook
+  //  WebSocketGateway生命周期hook
   afterInit() {
     console.log('OnGatewayInit');
   }

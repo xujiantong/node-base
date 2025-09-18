@@ -4,6 +4,7 @@ import { ExceptionModule } from '@/shared/exception';
 import { PrismaModule } from '@/shared/prisma/prisma.module';
 import { EventsModule } from '@/shared/websocket/events.module';
 import { RedisModule } from '@/shared/redis/redis.module';
+import { TaskModule } from '@/shared/task/task.module';
 
 @Global()
 @Module({
@@ -12,7 +13,8 @@ import { RedisModule } from '@/shared/redis/redis.module';
     ExceptionModule.forRoot(),
     RedisModule,
     PrismaModule,
-    EventsModule
+    EventsModule,
+    TaskModule
   ],
   exports: [RedisModule, PrismaModule]
 })

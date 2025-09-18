@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
-  Query
+  Query,
+  Req
 } from '@nestjs/common';
 import { UserService } from './user.service';
 
@@ -56,5 +57,11 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+  @ApiOperation({ summary: '获取当前登录信息' })
+  @Get('profile')
+  async profile(@Req() request: Request) {
+    const userId = request['user'].id;
+    return this.userService.findOne(userId);
   }
 }

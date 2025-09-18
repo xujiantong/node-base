@@ -42,7 +42,10 @@ export const Errors = {
   // 数据相关
   DATA_NOT_FOUND: { code: 40001, message: 'Data not found' },
   NODE_HAS_CHILDREN: { code: 40002, message: 'Node has children' },
-  NOT_FOUND: { code: 40003, message: 'Resource not found' }
+  NOT_FOUND: { code: 40003, message: 'Resource not found' },
+
+  // 任务相关
+  CREATE_TASK_ERROR: { code: 50001, message: 'Create task error' }
 } as const;
 
 export type ErrorKey = keyof typeof Errors;

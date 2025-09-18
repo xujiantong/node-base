@@ -40,7 +40,7 @@ async function bootstrap() {
   const displayUrl = url.replace('[::1]', 'localhost');
   console.log(`Application is running on: ${displayUrl}`);
   console.log(`Swagger is running on: ${displayUrl}/api`);
-  console.log(`BullMQ is running on: ${displayUrl}/bullmq`);
+  console.log(`BullMQ is running on: ${displayUrl}/scheduler`);
   console.log(`Frontend is running on: http://localhost:5173`);
 }
 bootstrap();
