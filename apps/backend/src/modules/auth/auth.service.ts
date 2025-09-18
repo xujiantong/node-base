@@ -9,7 +9,7 @@ import { isEmpty } from 'lodash';
 import { BizException } from '@/shared/exception';
 import { Errors } from '@/shared/exception/exception.const';
 import { CryptoUtil } from '@/utils/crypto.util';
-import { sys_user } from 'generated/prisma';
+import { sys_user } from '@prisma/client';
 import { ISecurityConfig, SecurityConfig } from '@/config';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '@/shared/prisma/prisma.service';

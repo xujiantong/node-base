@@ -20,3 +20,9 @@ export class ResDto<T> {
   })
   data: T;
 }
+export class PageDto<T> {
+  list: T[];
+  total: number;
+  page: number;
+  size: number;
+}

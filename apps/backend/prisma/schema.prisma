@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -35,4 +34,81 @@ model sys_refresh_token {
   expired_at   DateTime
   created_at   DateTime @default(now())
   access_token String   @unique
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sys_menu {
+  id             Int       @id @default(autoincrement())
+  name           String    @db.VarChar(50)
+  permission     String    @default("") @db.VarChar(100)
+  type           Int       @db.SmallInt
+  sort           Int       @default(0)
+  parent_id      Int       @default(0)
+  path           String?   @default("") @db.VarChar(255)
+  icon           String?   @default("#") @db.VarChar(100)
+  component      String?   @db.VarChar(255)
+  component_name String?   @db.VarChar(255)
+  status         Int       @default(0) @db.SmallInt
+  visible        Int       @default(1) @db.SmallInt
+  keep_alive     Int       @default(1) @db.SmallInt
+  created_by     Int?
+  created_at     DateTime? @db.Timestamp(6)
+  updated_by     Int?
+  updated_at     DateTime? @db.Timestamp(6)
+  is_deleted     Int?      @default(0) @db.SmallInt
+  level          String?   @db.VarChar(100)
+  redirect       String?   @db.VarChar(255)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sys_log {
+  id         Int       @id @default(autoincrement())
+  type       Int?      @db.SmallInt
+  target_id  Int?      @db.SmallInt
+  old_value  String?
+  new_value  String?
+  status     Int?      @db.SmallInt
+  created_by Int?
+  created_at DateTime? @db.Timestamptz(6)
+  updated_by Int?
+  updated_at DateTime? @db.Timestamptz(6)
+  id_deleted Int?      @default(0) @db.SmallInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sys_role {
+  id         Int       @id @default(autoincrement())
+  code       String    @db.VarChar(100)
+  name       String    @db.VarChar(30)
+  status     Int       @db.SmallInt
+  remark     String?   @db.VarChar(200)
+  created_by Int?
+  created_at DateTime? @db.Timestamp(6)
+  updated_by Int?
+  updated_at DateTime? @db.Timestamp(6)
+  is_deleted Int?      @default(0) @db.SmallInt
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sys_role_menu {
+  id         Int       @id @default(autoincrement())
+  role_id    Int
+  created_by Int?
+  created_at DateTime? @db.Timestamp(6)
+  updated_by Int?
+  updated_at DateTime? @db.Timestamp(6)
+  is_deleted Int?      @default(0) @db.SmallInt
+  menu_id    Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sys_user_role {
+  id         Int       @id @default(autoincrement())
+  user_id    Int
+  role_id    Int
+  created_by Int?
+  created_at DateTime? @db.Timestamptz(6)
+  updated_by Int?
+  updated_at DateTime? @db.Timestamptz(6)
+  is_deleted Int?      @default(0) @db.SmallInt
 }

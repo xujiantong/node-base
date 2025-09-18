@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "node-base",
   "scripts": {
-    "dev:web": "pnpm --filter ./apps/frontend dev"
+    "dev": "pnpm run dev:web & pnpm run dev:api",
+    "dev:web": "pnpm --filter ./apps/frontend dev",
+    "dev:api": "pnpm --filter ./apps/backend dev",
+    "build:api": "pnpm --filter ./apps/backend build"
   },
   "keywords": [
     "Nodejs",

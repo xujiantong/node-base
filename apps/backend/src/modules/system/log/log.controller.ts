@@ -1,34 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { LogService } from './log.service';
-import { CreateLogDto } from './dto/create-log.dto';
-import { UpdateLogDto } from './dto/update-log.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { LogService } from '@/modules/system/log/log.service';
+import { PageSearchDto } from '@/common/dto/request';
+import { JwtAuthGuard } from '@/modules/auth/guards/jwt-auth.guard';
 
-@Controller('log')
+@ApiTags('操作日志管理')
+@Controller('sys/log')
+@UseGuards(JwtAuthGuard) // 使用JwtAuthGuard进行权限验证
+@ApiBearerAuth('auth') // 添加Bearer认证
 export class LogController {
-  constructor(private readonly logService: LogService) {}
-
-  @Post()
-  create(@Body() createLogDto: CreateLogDto) {
-    return this.logService.create(createLogDto);
+  constructor(private logService: LogService) {}
+  @ApiOperation({ summary: '查询操作日志' })
+  @Get('page')
+  page(@Query() query: PageSearchDto) {
+    return this.logService.page(query);
   }
-
-  @Get()
-  findAll() {
-    return this.logService.findAll();
-  }
-
+  @ApiOperation({ summary: '恢复操作' })
+  @Get('recover')
+  recover() {}
+  @ApiOperation({ summary: '查询单条日志详情' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.logService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLogDto: UpdateLogDto) {
-    return this.logService.update(+id, updateLogDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.logService.remove(+id);
-  }
+  findOne() {}
 }

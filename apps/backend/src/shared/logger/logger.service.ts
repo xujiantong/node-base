@@ -99,7 +99,7 @@ export class LoggerService extends ConsoleLogger {
   }
 
   log(message: any, context?: string): void {
-    super.log.apply(this, [message, context]);
+    super.log.apply(this, [message, context || '']);
     this.winstonLogger.log(LogLevel.INFO, message, { context });
   }
 

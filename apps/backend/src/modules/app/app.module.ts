@@ -10,10 +10,11 @@ import { UserModule } from '@/modules/system/user/user.module';
 import { RoleModule } from '@/modules/system/role/role.module';
 import { MenuModule } from '@/modules/system/menu/menu.module';
 import { LogModule } from '@/modules/system/log/log.module';
-import { DeptModule } from '@/modules/system/dept/dept.module';
 import { LoggerModule } from '@/shared/logger/logger.module';
 import { ExceptionModule } from '@/shared/exception';
 import { AuthModule } from '@/modules/auth/auth.module';
+import { SystemModule } from '@/modules/system/system.module';
+import { SharedModule } from '@/shared/shared.module';
 
 @Module({
   imports: [
@@ -31,19 +32,12 @@ import { AuthModule } from '@/modules/auth/auth.module';
       // 加载自定义配置文件
       load: [...Object.values(config)]
     }),
-    LoggerModule.forRoot(),
-    ExceptionModule.forRoot(),
+    SharedModule,
     AuthModule,
-    RedisModule,
-    PrismaModule,
-    UserModule,
-    DeptModule,
-    RoleModule,
-    MenuModule,
-    LogModule
+    SystemModule
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [AppService, RedisModule, PrismaModule]
+  exports: [AppService]
 })
 export class AppModule {}

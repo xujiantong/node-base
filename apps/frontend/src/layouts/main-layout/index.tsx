@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import McHeaderTabs from '@/components/mc-header-tabs/McHeaderTabs.tsx';
 import useRouterStore from '@/stores/useRouterStore.ts';
 import { buildFlatMap } from '@/utils/router.util.ts';
+import { io } from 'socket.io-client';
 
 export default function Page() {
   const [collapsed, setCollapsed] = useState(false);
